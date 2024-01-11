@@ -1,0 +1,5 @@
+from .patient_repository import PatientRepository
+from .doctor_repository import DoctorRepository
+from .schedule_repository import ScheduleRepository
+from .role_repository import RoleRepository
+from .certificate_repository import CertificateRepository
