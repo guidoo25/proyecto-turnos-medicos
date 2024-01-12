@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from database import db
 
 class Role(db.Model):
     __tablename__ = 'roles'
