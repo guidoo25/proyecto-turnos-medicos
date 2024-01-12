@@ -1,0 +1,29 @@
+Add a new certificate:
+  parameters:
+    - in: body
+      name: body
+      schema:
+        id: Certificate
+        required:
+          - doctor_id
+          - patient_id
+          - medical_condition
+          - description
+        properties:
+          doctor_id:
+            type: integer
+            description: The ID of the doctor
+          patient_id:
+            type: integer
+            description: The ID of the patient
+          medical_condition:
+            type: string
+            description: The medical condition of the patient
+          description:
+            type: string
+            description: The description of the medical condition
+  responses:
+    201:
+      description: Certificate added
+    400:
+      description: Invalid syntax in request body

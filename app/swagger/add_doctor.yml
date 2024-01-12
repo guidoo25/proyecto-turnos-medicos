@@ -1,0 +1,21 @@
+Add a new doctor:
+  parameters:
+    - in: body
+      name: body
+      schema:
+        id: Doctor
+        required:
+          - name
+          - specialty
+        properties:
+          name:
+            type: string
+            description: The name of the doctor
+          specialty:
+            type: string
+            description: The specialty of the doctor
+  responses:
+    201:
+      description: Doctor added
+    400:
+      description: Invalid syntax in request body
