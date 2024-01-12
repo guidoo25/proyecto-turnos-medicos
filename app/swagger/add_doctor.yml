@@ -18,4 +18,4 @@ Add a new doctor:
     201:
       description: Doctor added
     400:
-      description: Invalid syntax in request body
+
