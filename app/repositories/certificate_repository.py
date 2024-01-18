@@ -19,4 +19,3 @@ class CertificateRepository:
     def delete(self, certificate):
         db.session.delete(certificate)
         db.session.commit()
-
