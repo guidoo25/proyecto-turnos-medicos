@@ -30,4 +30,3 @@ def delete_role(id):
     if role is None:
         return jsonify({'error': 'Role not found'}), 404
     return jsonify({'message': 'Role deleted successfully'})
-

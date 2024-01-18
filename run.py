@@ -13,7 +13,6 @@ app.register_blueprint(certificate_blueprint)
 app.register_blueprint(doctor_blueprint)
 app.register_blueprint(horario_blueprint)
 app.register_blueprint(Blueprint_patient)
-print ("localhost:5000/apidocs")
 
 if __name__ == '__main__':
     app.run(debug=True)
