@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify,Blueprint
 from flasgger import Swagger, swag_from
 from flask_sqlalchemy import SQLAlchemy
-from app.models.certificate import db, Certificate
+from app.models.certificate import  Certificate
 import os
+from app import db
 
 
 certificate_blueprint = Blueprint('certificate', __name__)

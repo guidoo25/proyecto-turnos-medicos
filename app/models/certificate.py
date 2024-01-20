@@ -1,10 +1,11 @@
 from datetime import datetime
-from database import db
+from app import db
 
 class Certificate(db.Model):
+    __tablename__ = 'certificates'
     id = db.Column(db.Integer, primary_key=True)
-    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
-    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'), nullable=False)
     issue_date = db.Column(db.DateTime, default=datetime.utcnow)
     medical_condition = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text)

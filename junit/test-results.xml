@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="2" time="0.647" timestamp="2024-01-19T19:35:10.154734" hostname="DESKTOP-9GIK2H5"><testcase classname="" name="app" time="0.000"><error message="collection failure">C:\Users\guido\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\runner.py:341: in from_call
+    result: Optional[TResult] = func()
+C:\Users\guido\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\runner.py:372: in &lt;lambda&gt;
+    call = CallInfo.from_call(lambda: list(collector.collect()), "collect")
+C:\Users\guido\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\doctest.py:567: in collect
+    module = import_path(
+C:\Users\guido\AppData\Local\Programs\Python\Python311\Lib\site-packages\_pytest\pathlib.py:590: in import_path
+    raise ImportPathMismatchError(module_name, module_file, path)
+E   _pytest.pathlib.ImportPathMismatchError: ('app', 'D:\\nuevo\\medical-appointment-system\\app', WindowsPath('D:/nuevo/medical-appointment-system/app.py'))</error></testcase><testcase classname="" name="app.services.certificate_service" time="0.000"><error message="collection failure">app\services\certificate_service.py:1: in &lt;module&gt;
+    from app.models import Certificate
+E   ImportError: cannot import name 'Certificate' from 'app.models' (D:\nuevo\medical-appointment-system\app\models\__init__.py)</error></testcase></testsuite></testsuites>

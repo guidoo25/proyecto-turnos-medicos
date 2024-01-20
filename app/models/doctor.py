@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from database import db
+from app import db
 
 class Doctor(db.Model):
     __tablename__ = 'doctors'
@@ -7,7 +7,6 @@ class Doctor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     specialty = db.Column(db.String(100), nullable=False)
-
 
     def __init__(self, name, specialty):
         self.name = name
@@ -28,3 +27,11 @@ class Doctor(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'specialty': self.specialty
+        }
