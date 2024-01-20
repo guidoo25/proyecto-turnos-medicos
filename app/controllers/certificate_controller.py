@@ -1,27 +1,56 @@
-from flask import Blueprint, request
-from app.services.certificate_service import CertificateService
-from flasgger import swag_from
+from flask import Flask, request, jsonify,Blueprint
+from flasgger import Swagger, swag_from
+from flask_sqlalchemy import SQLAlchemy
+from app.models.certificate import  Certificate
+import os
+from app import db
 
-certificate_controller = Blueprint('certificate_controller', __name__)
 
-@certificate_controller.route('/certificates', methods=['POST'])
-@swag_from('../docs/certificate/create_certificate.yml')
-def create_certificate():
+certificate_blueprint = Blueprint('certificate', __name__)
+
+
+
+@certificate_blueprint.route('/certificates', methods=['POST'])
+
+def add_certificate():
     data = request.get_json()
-    return CertificateService.create_certificate(data)
+    new_certificate = Certificate(doctor_id=data['doctor_id'], patient_id=data['patient_id'], medical_condition=data['medical_condition'], description=data['description'])
+    db.session.add(new_certificate)
+    db.session.commit()
+    return jsonify({'message': 'New certificate added'}), 201
 
-@certificate_controller.route('/certificates/<int:certificate_id>', methods=['GET'])
-@swag_from('../docs/certificate/get_certificate.yml')
-def get_certificate(certificate_id):
-    return CertificateService.get_certificate(certificate_id)
+@certificate_blueprint.route('/certificates', methods=['GET'])
+#@swag_from('docs/get_certificates.yml')
+def get_certificates():
+    certificates = Certificate.query.all()
+    return jsonify([certificate.serialize for certificate in certificates]), 200
 
-@certificate_controller.route('/certificates/<int:certificate_id>', methods=['PUT'])
-@swag_from('../docs/certificate/update_certificate.yml')
-def update_certificate(certificate_id):
+@certificate_blueprint.route('/certificates/<int:id>', methods=['GET'])
+#@swag_from('docs/get_certificate.yml')
+def get_certificate(id):
+    certificate = Certificate.query.get(id)
+    if certificate is None:
+        return jsonify({'message': 'Certificate not found'}), 404
+    return jsonify(certificate.serialize), 200
+
+@certificate_blueprint.route('/certificates/<int:id>', methods=['PUT'])
+#@swag_from('docs/update_certificate.yml')
+def update_certificate(id):
     data = request.get_json()
-    return CertificateService.update_certificate(certificate_id, data)
+    certificate = Certificate.query.get(id)
+    if certificate is None:
+        return jsonify({'message': 'Certificate not found'}), 404
+    certificate.medical_condition = data['medical_condition']
+    certificate.description = data['description']
+    db.session.commit()
+    return jsonify({'message': 'Certificate updated'}), 200
 
-@certificate_controller.route('/certificates/<int:certificate_id>', methods=['DELETE'])
-@swag_from('../docs/certificate/delete_certificate.yml')
-def delete_certificate(certificate_id):
-    return CertificateService.delete_certificate(certificate_id)
+@certificate_blueprint.route('/certificates/<int:id>', methods=['DELETE'])
+#@swag_from('docs/delete_certificate.yml')
+def delete_certificate(id):
+    certificate = Certificate.query.get(id)
+    if certificate is None:
+        return jsonify({'message': 'Certificate not found'}), 404
+    db.session.delete(certificate)
+    db.session.commit()
+    return jsonify({'message': 'Certificate deleted'}), 200

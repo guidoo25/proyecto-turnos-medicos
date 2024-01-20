@@ -1,0 +1,29 @@
+Add a new patient:
+  parameters:
+    - in: body
+      name: body
+      schema:
+        id: Patient
+        required:
+          - name
+          - last_name
+          - ci
+          - doctor_id
+        properties:
+          name:
+            type: string
+            description: The patient's name
+          last_name:
+            type: string
+            description: The patient's last name
+          ci:
+            type: string
+            description: The patient's CI
+          doctor_id:
+            type: integer
+            description: The ID of the doctor
+  responses:
+    201:
+      description: Patient added
+    400:
+      description: Invalid syntax in request body

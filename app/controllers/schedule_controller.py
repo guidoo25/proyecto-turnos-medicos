@@ -1,27 +1,57 @@
-from flask import Blueprint, request
-from app.services.schedule_service import ScheduleService
+from flask import request, jsonify, Blueprint
+from ..models.schedule import Schedule
+from flask import request, jsonify, Blueprint
+from ..models.schedule import Schedule
 
-schedule_controller = Blueprint('schedule_controller', __name__)
-schedule_service = ScheduleService()
+horario_blueprint = Blueprint('horario', __name__) 
 
-@schedule_controller.route('/schedules', methods=['GET'])
+@horario_blueprint.route('/horario', methods=['POST'])
+def add_schedule():
+    """
+    neuvo  horario
+    ---
+    parameters:
+        - in: body
+          name: body
+          schema:
+              id: Schedule
+              required:
+                  - doctor_id
+                  - patient_id
+                  - appointment_date
+              properties:
+                  doctor_id:
+                      type: integer
+                      description: The ID of the doctor
+                  patient_id:
+                      type: integer
+                      description: The ID of the patient
+                  appointment_date:
+                      type: string
+                      format: date-time
+                      description: The date and time of the appointment
+    responses:
+        201:
+            description: Schedule added
+        400:
+            description: Invalid syntax in request body
+    """
+    data = request.get_json()
+    new_schedule = Schedule(doctor_id=data['doctor_id'], patient_id=data['patient_id'], appointment_date=data['appointment_date'])
+    new_schedule.save()
+    return jsonify({'message': 'New schedule added'}), 201
+
+@horario_blueprint.route('/schedules', methods=['GET'])
+#@swag_from('docs/get_schedules.yml')
 def get_schedules():
-    return schedule_service.get_all_schedules()
+    schedules = Schedule.get_all()
+    return jsonify([schedule.serialize for schedule in schedules]), 200
 
-@schedule_controller.route('/schedules/<int:schedule_id>', methods=['GET'])
-def get_schedule(schedule_id):
-    return schedule_service.get_schedule_by_id(schedule_id)
-
-@schedule_controller.route('/schedules', methods=['POST'])
-def create_schedule():
-    data = request.get_json()
-    return schedule_service.create_schedule(data)
-
-@schedule_controller.route('/schedules/<int:schedule_id>', methods=['PUT'])
-def update_schedule(schedule_id):
-    data = request.get_json()
-    return schedule_service.update_schedule(schedule_id, data)
-
-@schedule_controller.route('/schedules/<int:schedule_id>', methods=['DELETE'])
-def delete_schedule(schedule_id):
-    return schedule_service.delete_schedule(schedule_id)
+@horario_blueprint.route('/schedules/<int:id>', methods=['DELETE'])
+#@swag_from('docs/delete_schedule.yml')
+def delete_schedule(id):
+    schedule = Schedule.query.get(id)
+    if schedule is None:
+        return jsonify({'message': 'Schedule not found'}), 404
+    schedule.delete()
+    return jsonify({'message': 'Schedule deleted'}), 200

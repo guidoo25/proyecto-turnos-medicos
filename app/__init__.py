@@ -1,15 +1,13 @@
 from flask import Flask
-from .controllers import patient_controller, doctor_controller, schedule_controller, role_controller, certificate_controller
 from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()  # La definición de db está aquí
+
 def create_app():
     app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'  # Cambia la URI de la base de datos aquí
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  
 
-    app.register_blueprint(patient_controller.bp)
-    app.register_blueprint(doctor_controller.bp)
-    app.register_blueprint(schedule_controller.bp)
-    app.register_blueprint(role_controller.bp)
-    app.register_blueprint(certificate_controller.bp)
-    db = SQLAlchemy(app)
-    
+    db.init_app(app)
 
-    return app, db
+    return app
