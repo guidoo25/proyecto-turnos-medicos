@@ -9,7 +9,7 @@ app = create_app()
 swagger = Swagger(app)
 
 with app.app_context():
-    db.create_all()  # Crea todas las tablas definidas en tus modelos
+    db.create_all()  
 
 app.register_blueprint(certificate_blueprint)
 app.register_blueprint(doctor_blueprint)
